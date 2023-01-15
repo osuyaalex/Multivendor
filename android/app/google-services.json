@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "252432202808",
+    "project_id": "alex-multistorage",
+    "storage_bucket": "alex-multistorage.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252432202808:android:aef4b80cf95cc6ef1abacd",
+        "android_client_info": {
+          "package_name": "com.osuyaalex.multivendor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "252432202808-2l70h1vrfuebgtoknm45nehb47pi22ie.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.osuyaalex.multivendor",
+            "certificate_hash": "16e72502979024048dae372e296b0e7c503ff1b1"
+          }
+        },
+        {
+          "client_id": "252432202808-omvrth8qkt9mirsp42l3843v83230ho7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAe3ftifKARP47kZK8t1en68nx8N23zT00"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "252432202808-omvrth8qkt9mirsp42l3843v83230ho7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
