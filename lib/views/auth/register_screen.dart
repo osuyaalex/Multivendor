@@ -7,14 +7,14 @@ import 'package:multivendor/controllers/auth_controller.dart';
 import 'package:multivendor/utils/snackbar.dart';
 import 'package:multivendor/views/auth/login_screen.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+class BuyerRegisterScreen extends StatefulWidget {
+  const BuyerRegisterScreen({Key? key}) : super(key: key);
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<BuyerRegisterScreen> createState() => _BuyerRegisterScreen();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _BuyerRegisterScreen extends State<BuyerRegisterScreen> {
   final AuthController _authController = AuthController();
   late String email;
   late String fullName;
@@ -31,18 +31,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _isLoading = true;
     });
    if(_globalKey.currentState!.validate()){
-      await _authController.signupUsers(
-         email,
-         fullName,
-         phoneNo,
-         password
-     ).whenComplete((){
-       setState(() {
-         _globalKey.currentState!.reset();
-         _isLoading = false;
-       });
-      });
-      return snack(context, 'Account Created');
+      if(_image != null){
+        await _authController.signupUsers(
+            email,
+            fullName,
+            phoneNo,
+            password,
+            _image
+        ).whenComplete((){
+
+          setState(() {
+            _image = null;
+            _globalKey.currentState!.reset();
+            _isLoading = false;
+          });
+        });
+        return snack(context, 'Account Created');
+      }
    }else{
      setState(() {
        _isLoading = false;
@@ -73,6 +78,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children:  [
+                const SizedBox(
+                  height: 30,
+                ),
                 const Text('Create Customer Account',
                   style: TextStyle(
                     fontSize: 20,
@@ -88,14 +96,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         children:  [
                           _image != null ? CircleAvatar(
                             radius: 44,
-                            backgroundImage: MemoryImage(_image!),
+                            backgroundImage: MemoryImage(_image!,)
                           ):const CircleAvatar(
                             radius: 44,
                             backgroundColor: Colors.black,
+                            backgroundImage: NetworkImage('https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'),
                           ),
                           Positioned(
-                            right: 20,
-                              bottom: 18,
+                            right: 1,
                               child: _switchPic ? IconButton(
                                   onPressed: (){
                                     selectGalleryImage();
@@ -103,6 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   icon:const Icon(
                                     CupertinoIcons.photo,
                                     color: Colors.white,
+                                    size: 20,
                                   )
                               ):IconButton(
                                   onPressed: (){
@@ -111,6 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   icon:const Icon(
                                     CupertinoIcons.camera,
                                     color: Colors.white,
+                                    size: 20,
                                   )
                               )
                           )

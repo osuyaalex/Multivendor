@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 
 class BannerScreen extends StatefulWidget {
   BannerScreen({Key? key}) : super(key: key);
@@ -14,7 +16,7 @@ class _BannerScreenState extends State<BannerScreen> {
   final List _bannerImage = [];
 
   getBanners(){
-    _firestore.collection('banners').get().then((QuerySnapshot querySnapshot) {
+    _firestore.collection('Banners').get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
         setState(() {
           _bannerImage.add(element['image']);
@@ -46,7 +48,25 @@ class _BannerScreenState extends State<BannerScreen> {
             itemBuilder: (context, index){
             return ClipRRect(
               borderRadius: BorderRadius.circular(15),
-                child: Image.network(_bannerImage[index], fit: BoxFit.cover,)
+                child: CachedNetworkImage(
+                    imageUrl: _bannerImage[index],
+                  placeholder: (context, url){
+                      return Shimmer(
+                        duration: const Duration(seconds: 4),
+                          interval: const Duration(seconds: 3),
+                          color: Colors.white,
+                          colorOpacity: 0,
+                          direction: const ShimmerDirection.fromLTRB(),
+                          child: Container(
+                            color: Colors.white,
+                          )
+                      );
+                  },
+                  errorWidget: (context, url, error){
+                     return const Icon(Icons.error, color: Colors.white,);
+                  },
+                  fit: BoxFit.cover,
+                ),
             );
             }
         )
