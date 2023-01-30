@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:multivendor/vendor/views/screens/main_vendor_screen.dart';
+import 'package:multivendor/views/auth/login_screen.dart';
 import 'package:multivendor/views/auth/register_screen.dart';
 import 'package:multivendor/views/main_screen.dart';
 
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.blue,
       ),
-      home: const MainVendorScreen()
+      home: const LoginScreen()
     );
   }
 }
