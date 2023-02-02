@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:multivendor/provider/product_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class GeneralScreen extends StatefulWidget {
   const GeneralScreen({Key? key}) : super(key: key);
@@ -21,6 +24,12 @@ _getCategories(){
   });
 }
 
+String formattedDate(date){
+  final outputDateFormat = DateFormat('dd/MM/yyyy');
+  final outputDate = outputDateFormat.format(date);
+  return outputDate;
+}
+
 @override
   void initState() {
     // TODO: implement initState
@@ -30,6 +39,7 @@ _getCategories(){
 
   @override
   Widget build(BuildContext context) {
+  final ProductProvider _productProvider = Provider.of<ProductProvider>(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -37,6 +47,9 @@ _getCategories(){
           child: Column(
             children: [
               TextFormField(
+                onChanged: (value){
+                  _productProvider.getFormData(productName: value);
+                },
                 decoration: const InputDecoration(
                   labelText: 'Enter product name'
                 ),
@@ -45,6 +58,9 @@ _getCategories(){
                 height: 15,
               ),
               TextFormField(
+                onChanged: (value){
+                  _productProvider.getFormData(productPrice: double.parse(value));
+                },
                 decoration: const InputDecoration(
                     labelText: 'Enter product price',
                 ),
@@ -53,6 +69,9 @@ _getCategories(){
                 height: 15,
               ),
               TextFormField(
+                onChanged: (value){
+                  _productProvider.getFormData(productQuantity: int.parse(value));
+                },
                 decoration: const InputDecoration(
                   labelText: 'Enter product quantity',
                 ),
@@ -61,20 +80,27 @@ _getCategories(){
                 height: 15,
               ),
               DropdownButtonFormField(
+
                 hint: const Text('select category'),
                   items: _categoryList.map<DropdownMenuItem<dynamic>>((e){
                     return DropdownMenuItem(
                         value: e,
                         child: Text(e),
-
                     );
                   }).toList(),
-                  onChanged: (value){}
+                  onChanged: (value){
+                  setState(() {
+                    _productProvider.getFormData(productCategory: value);
+                  });
+                  }
               ),
               const SizedBox(
                 height: 15,
               ),
               TextFormField(
+                onChanged: (value){
+                  _productProvider.getFormData(productDescription: value);
+                },
                 maxLength: 800,
                 maxLines: 8,
                 decoration:  InputDecoration(
@@ -85,6 +111,7 @@ _getCategories(){
                 ),
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                  TextButton(
                      onPressed: (){
@@ -93,10 +120,17 @@ _getCategories(){
                            initialDate: DateTime.now(),
                            firstDate: DateTime.now(),
                            lastDate: DateTime(5000),
-                       );
+                       ).then((value){
+                         setState(() {
+                           _productProvider.getFormData(scheduleDate: value);
+                         });
+                       });
                      },
                      child: const Text('Schedule')
-                 )
+                 ),
+                  _productProvider.productData['scheduleDate']!= null ?
+                  Text(formattedDate(_productProvider.productData['scheduleDate'])
+                  ):Text('dd/mm/yyyy')
                 ],
               )
             ],
