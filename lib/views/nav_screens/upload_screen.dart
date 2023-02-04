@@ -39,6 +39,7 @@ class UploadScreen extends StatelessWidget {
         bottomSheet: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
               onPressed: (){
                print(_provider.productData['productName']);
                print(_provider.productData['productPrice']);
@@ -46,6 +47,8 @@ class UploadScreen extends StatelessWidget {
                print(_provider.productData['productCategory']);
                print(_provider.productData['productDescription']);
                print(_provider.productData['imageUrlList']);
+               print(_provider.productData['productShipping']);
+               print(_provider.productData['sizeList']);
               },
               child: Text('Save')
           ),

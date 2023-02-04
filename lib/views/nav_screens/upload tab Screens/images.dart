@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multivendor/provider/product_provider.dart';
 import 'package:provider/provider.dart';
@@ -65,6 +66,9 @@ class _ImagesScreenState extends State<ImagesScreen> {
       ),
       TextButton(
           onPressed: ()async{
+            setState(() {
+              EasyLoading.show();
+            });
             for(var img in _image){                            //to generate unique id for each image
              Reference ref = _storage.ref().child('productImage').child(Uuid().v4());
              await ref.putFile(img).whenComplete(()async{
@@ -72,6 +76,7 @@ class _ImagesScreenState extends State<ImagesScreen> {
                  setState(() {
                    _imageUrlList.add(value);
                    _provider.getFormData(imageUrlList: _imageUrlList);
+                   EasyLoading.dismiss();
                  });
                });
              });

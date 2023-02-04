@@ -4,7 +4,19 @@ import 'package:flutter/cupertino.dart';
 
 class ProductProvider with ChangeNotifier{
   Map<String, dynamic> productData = {};
-  getFormData({String? productName, double? productPrice, int? productQuantity, String? productCategory, String? productDescription, DateTime? scheduleDate, List<String>? imageUrlList}){
+  getFormData({
+    String? productName,
+    double? productPrice,
+    int? productQuantity,
+    String? productCategory,
+    String? productDescription,
+    DateTime? scheduleDate,
+    List<String>? imageUrlList,
+    bool? chargeShipping,
+    int? productShipping,
+    String? brandName,
+    List<String>? sizeList
+  }){
     if (productName != null){
       productData['productName'] = productName;
     }
@@ -25,6 +37,18 @@ class ProductProvider with ChangeNotifier{
     }
     if(imageUrlList != null){
       productData['imageUrlList'] = imageUrlList;
+    }
+    if(chargeShipping != null){
+      productData['ChargeShipping'] = chargeShipping;
+    }
+    if(productShipping != null){
+      productData['productShipping'] = productShipping;
+    }
+    if(brandName != null){
+      productData['brandName'] = brandName;
+    }
+    if(sizeList != null){
+      productData['sizeList'] = sizeList;
     }
   }
 }
