@@ -1,13 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:multivendor/views/nav_screens/widgets/home_products.dart';
+import 'package:multivendor/views/nav_screens/widgets/main_product.dart';
 
-class CategoryText extends StatelessWidget {
-   CategoryText({Key? key}) : super(key: key);
-  final List<String> _category = [
-    'Veges', 'Eggs', 'Tea'
-  ];
+class CategoryText extends StatefulWidget {
+   const CategoryText({Key? key}) : super(key: key);
+
+  @override
+  State<CategoryText> createState() => _CategoryTextState();
+}
+
+class _CategoryTextState extends State<CategoryText> {
+String? selectedCategory;
 
   @override
   Widget build(BuildContext context) {
+    final Stream<QuerySnapshot> _categoryStream = FirebaseFirestore.instance.collection('Categories').snapshots();
+
     return  Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -18,21 +27,37 @@ class CategoryText extends StatelessWidget {
               fontWeight: FontWeight.bold
             ),
           ),
-          SizedBox(
+      StreamBuilder<QuerySnapshot>(
+        stream: _categoryStream,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text('Something went wrong');
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text("Loading");
+          }
+
+          return SizedBox(
             height: 40,
             child: Row(
               children: [
                 Expanded(
                     child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _category.length,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index){
+                          final categoryData = snapshot.data!.docs[index];
                           return ActionChip(
-                            onPressed: (){},
-                            backgroundColor: Colors.black,
-                              label: Text(_category[index],
+                              onPressed: (){
+                                setState(() {
+                                  selectedCategory = categoryData['Category Name'];
+                                });
+                              },
+                              backgroundColor: Colors.black,
+                              label: Text(categoryData['Category Name'],
                                 style: const TextStyle(
-                                  color: Colors.white
+                                    color: Colors.white
                                 ),
                               )
                           );
@@ -45,7 +70,11 @@ class CategoryText extends StatelessWidget {
                 )
               ],
             ),
-          )
+          );
+        },
+      ),
+          selectedCategory != null ?HomeProducts(categoryName: selectedCategory!):
+              const MainProducts()
         ],
       ),
     );

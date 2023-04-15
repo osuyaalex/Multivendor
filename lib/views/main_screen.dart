@@ -40,7 +40,7 @@ class _MainScreenState extends State<MainScreen> {
           selectedItemColor: Colors.grey,
           items: [
             BottomNavigationBarItem(icon: SvgPicture.asset('assets/icons/home.svg', width: 30,), label: 'Home',),
-            BottomNavigationBarItem(icon: SvgPicture.asset('assets/icons/explore.svg',width: 30,), label: 'Explore'),
+            BottomNavigationBarItem(icon: SvgPicture.asset('assets/icons/explore.svg',width: 30,), label: 'Category'),
             BottomNavigationBarItem(icon: SvgPicture.asset('assets/icons/store.svg',width: 30,), label: 'Store'),
             BottomNavigationBarItem(icon: SvgPicture.asset('assets/icons/shopping_cart.svg',width: 30,), label: 'Cart'),
             BottomNavigationBarItem(icon: SvgPicture.asset('assets/icons/search.svg',width: 30,), label: 'Search'),

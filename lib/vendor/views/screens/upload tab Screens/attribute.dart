@@ -9,13 +9,16 @@ class AttributeScreen extends StatefulWidget {
   State<AttributeScreen> createState() => _AttributeScreenState();
 }
 
-class _AttributeScreenState extends State<AttributeScreen> {
+class _AttributeScreenState extends State<AttributeScreen> with AutomaticKeepAliveClientMixin{
+  @override
+  bool get wantKeepAlive => true;
   final TextEditingController _editingController = TextEditingController();
   final List<String> _sizeList = [];
   bool _entered = false;
   bool _saveSize = false;
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final ProductProvider provider = Provider.of<ProductProvider>(context);
     return  SingleChildScrollView(
       child: Column(
@@ -23,6 +26,11 @@ class _AttributeScreenState extends State<AttributeScreen> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextFormField(
+              validator: (v){
+                if(v!.isEmpty){
+                  return 'Put in value';
+                }
+              },
               onChanged: (value){
                 provider.getFormData(brandName: value);
               },
@@ -108,7 +116,7 @@ class _AttributeScreenState extends State<AttributeScreen> {
             style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
               onPressed: (){
               provider.getFormData(sizeList: _sizeList);
-              _sizeList.clear();
+
               setState(() {
                 _saveSize = true;
               });

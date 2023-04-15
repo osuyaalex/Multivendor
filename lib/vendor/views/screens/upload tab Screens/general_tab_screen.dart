@@ -11,7 +11,9 @@ class GeneralScreen extends StatefulWidget {
   State<GeneralScreen> createState() => _GeneralScreenState();
 }
 
-class _GeneralScreenState extends State<GeneralScreen> {
+class _GeneralScreenState extends State<GeneralScreen> with AutomaticKeepAliveClientMixin {
+@override
+bool get wantKeepAlive => true;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final List<String> _categoryList = [];
 _getCategories(){
@@ -39,14 +41,23 @@ String formattedDate(date){
 
   @override
   Widget build(BuildContext context) {
+  super.build(context);
   final ProductProvider _productProvider = Provider.of<ProductProvider>(context);
     return Scaffold(
+
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
               TextFormField(
+                validator: (value){
+                  if(value!.isEmpty){
+                    return 'Enter product name';
+                  }else{
+                    return null;
+                  }
+                },
                 onChanged: (value){
                   _productProvider.getFormData(productName: value);
                 },
@@ -58,6 +69,13 @@ String formattedDate(date){
                 height: 15,
               ),
               TextFormField(
+                validator: (value){
+                  if(value!.isEmpty){
+                    return 'Enter product price';
+                  }else{
+                    return null;
+                  }
+                },
                 onChanged: (value){
                   _productProvider.getFormData(productPrice: double.parse(value));
                 },
@@ -69,6 +87,13 @@ String formattedDate(date){
                 height: 15,
               ),
               TextFormField(
+                validator: (value){
+                  if(value!.isEmpty){
+                    return 'Enter product quantity';
+                  }else{
+                    return null;
+                  }
+                },
                 onChanged: (value){
                   _productProvider.getFormData(productQuantity: int.parse(value));
                 },
@@ -80,7 +105,6 @@ String formattedDate(date){
                 height: 15,
               ),
               DropdownButtonFormField(
-
                 hint: const Text('select category'),
                   items: _categoryList.map<DropdownMenuItem<dynamic>>((e){
                     return DropdownMenuItem(
@@ -98,6 +122,13 @@ String formattedDate(date){
                 height: 15,
               ),
               TextFormField(
+                validator: (value){
+                  if(value!.isEmpty){
+                    return 'Enter product description';
+                  }else{
+                    return null;
+                  }
+                },
                 onChanged: (value){
                   _productProvider.getFormData(productDescription: value);
                 },

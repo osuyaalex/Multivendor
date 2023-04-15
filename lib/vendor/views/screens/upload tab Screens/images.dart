@@ -14,12 +14,14 @@ class ImagesScreen extends StatefulWidget {
   State<ImagesScreen> createState() => _ImagesScreenState();
 }
 
-class _ImagesScreenState extends State<ImagesScreen> {
+class _ImagesScreenState extends State<ImagesScreen> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
  final ImagePicker _picker = ImagePicker();
  final FirebaseStorage _storage = FirebaseStorage.instance;
 
- List<File> _image = [];
- List<String>_imageUrlList = [];
+ final List<File> _image = [];
+ final List<String>_imageUrlList = [];
 
   chooseImage()async{
     final pockedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -34,6 +36,7 @@ class _ImagesScreenState extends State<ImagesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final ProductProvider _provider = Provider.of<ProductProvider>(context);
     return Column(
       children: [
@@ -75,14 +78,16 @@ class _ImagesScreenState extends State<ImagesScreen> {
                await ref.getDownloadURL().then((value){
                  setState(() {
                    _imageUrlList.add(value);
-                   _provider.getFormData(imageUrlList: _imageUrlList);
-                   EasyLoading.dismiss();
                  });
                });
              });
             }
+            setState(() {
+              _provider.getFormData(imageUrlList: _imageUrlList);
+              EasyLoading.dismiss();
+            });
           },
-          child: Text('Upload')
+          child: _image.isNotEmpty?const Text('Upload'):const Text('')
       )
       ],
     );

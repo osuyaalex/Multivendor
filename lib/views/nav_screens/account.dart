@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:multivendor/views/auth/login_screen.dart';
 class Account extends StatelessWidget {
    Account({Key? key}) : super(key: key);
   CollectionReference buyers = FirebaseFirestore.instance.collection('Buyers');
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return  FutureBuilder<DocumentSnapshot>(
@@ -88,7 +90,14 @@ class Account extends StatelessWidget {
                     leading: Icon(Icons.shopping_cart_checkout),
                     title: Text('Orders'),
                   ),
-                  const ListTile(
+                   ListTile(
+                    onTap: ()async{
+                      await _firebaseAuth.signOut().whenComplete((){
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return const LoginScreen();
+                        }));
+                      });
+                    },
                     leading: Icon(Icons.logout),
                     title: Text('Settings'),
                   ),
